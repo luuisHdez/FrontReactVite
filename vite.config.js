@@ -11,14 +11,14 @@ export default defineConfig({
   server:{
     port: 3000,
     strictPort: true,
-    host: 'localhost',
-    origin: 'http://localhost',
+    host: '0.0.0.0',
+    origin: 'http://localhost:3000',
   },
   esbuild: {
     target: 'esnext',
     // To excecute in windows local just comment
     
     //To execute in docker container
-    platform: 'linux',
+//    platform: 'linux',
   }
 })

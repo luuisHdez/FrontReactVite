@@ -38,7 +38,7 @@ function LoginPage() {
     };
 
     return (
-        <div>
+        <div className="max-w-xl mx-auto">
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
                 <div>

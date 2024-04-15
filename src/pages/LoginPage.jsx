@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/tasks.api';  // Import loginUser from tasks.api.js
 
 // Custom hook for handling login
-const navigate = useNavigate();
+
 const useLogin = () => {
     
     const handleLogin = async (credentials) => {
@@ -27,6 +27,7 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { loginUser } = useLogin();
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();

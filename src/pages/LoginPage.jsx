@@ -53,7 +53,7 @@ function LoginPage() {
                 {error && <p className="error bg-red-500 p-3 rounded-lg block w-full text-center">{error}</p>}
             </form>
             <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3"
-                    onClick={() => navigate("/register")}>Register</button>
+                   onClick={()=> navigate("/register")}>Register</button>
         </div>
     );
 }

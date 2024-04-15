@@ -47,3 +47,12 @@ export const updateTask = (id, task) => {
     console.error("There was an error!", error);
 });
 }
+
+export const registerUser = (userData) => {
+    return tasksapi.post('/register/', userData)
+    .then(response => response.data)
+    .catch(error => {
+        console.error("There was an error!", error);
+        throw error;
+    });
+}

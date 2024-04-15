@@ -1,7 +1,10 @@
 import axios from 'axios';
 const tasksapi = axios.create({
     baseURL:'http://localhost:8000/tasks/api/v1/tasks/'
-})
+});
+const register = axos.create({
+    baseURL:'http://localhost:8000/tasks/api/v1/
+});
 
 export const getAllTasks = () => {
     return tasksapi.get('/')
@@ -49,7 +52,7 @@ export const updateTask = (id, task) => {
 }
 
 export const registerUser = (userData) => {
-    return tasksapi.post('/register/', userData)
+    return register.post('/register/', userData)
     .then(response => response.data)
     .catch(error => {
         console.error("There was an error!", error);

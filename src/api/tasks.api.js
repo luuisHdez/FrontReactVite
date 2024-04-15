@@ -6,6 +6,15 @@ const register = axios.create({
     baseURL:'http://localhost:8000/tasks/api/v1/'
 });
 
+export const loginUser = (credentials) => {
+    return register.post('token/', credentials)
+        .then(response => response.data)
+        .catch(error => {
+            console.error("Login failed:", error);
+            throw error;
+        });
+};
+
 export const getAllTasks = () => {
     return tasksapi.get('/')
     .then(response => response.data)

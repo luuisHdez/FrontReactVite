@@ -6,7 +6,7 @@ import { loginUser } from '../api/tasks.api';  // Import loginUser from tasks.ap
 // Custom hook for handling login
 
 const useLogin = () => {
-    
+    const navigate = useNavigate();
     const handleLogin = async (credentials) => {
         try {
             const tokens = await loginUser(credentials);
@@ -27,7 +27,6 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { loginUser } = useLogin();
-    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();

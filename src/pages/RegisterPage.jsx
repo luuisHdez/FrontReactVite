@@ -24,7 +24,7 @@ function RegisterPage() {
     };
 
     return (
-        <div>
+        <div className="max-w-xl mx-auto">
             <h1>Register</h1>
             <form onSubmit={handleRegister}>
                 <div>
@@ -34,6 +34,7 @@ function RegisterPage() {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
+                        className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
                     />
                 </div>
                 <div>
@@ -43,6 +44,7 @@ function RegisterPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
                     />
                 </div>
                 <div>
@@ -52,10 +54,11 @@ function RegisterPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
                     />
                 </div>
-                <button type="submit">Register</button>
-                {error && <p className="error">{error}</p>}
+                <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3">Register</button>
+                {error && <p className="error bg-red-500 p-3 rounded-lg block w-full text-center">{error}</p>}
             </form>
         </div>
     );

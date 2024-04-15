@@ -52,7 +52,7 @@ export const updateTask = (id, task) => {
 }
 
 export const registerUser = (userData) => {
-    return register.post('/register/', userData)
+    return register.post('register/', userData)
     .then(response => response.data)
     .catch(error => {
         console.error("There was an error!", error);

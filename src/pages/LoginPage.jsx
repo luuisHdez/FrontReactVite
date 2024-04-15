@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/tasks.api';  // Import loginUser from tasks.api.js
 
 // Custom hook for handling login
+const navigate = useNavigate();
 const useLogin = () => {
-    const navigate = useNavigate();
-
+    
     const handleLogin = async (credentials) => {
         try {
             const tokens = await loginUser(credentials);

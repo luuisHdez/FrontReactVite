@@ -43,14 +43,14 @@ function LoginPage() {
             <form onSubmit={handleLogin}>
                 <div>
                     <label>Username:</label>
-                    <input type="text" value={username} onChange={e => setUsername(e.target.value)} required />
+                    <input type="text" value={username} onChange={e => setUsername(e.target.value)} required className="bg-zinc-700 p-3 rounded-lg block w-full mb-3" />
                 </div>
                 <div>
                     <label>Password:</label>
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required className="bg-zinc-700 p-3 rounded-lg block w-full mb-3" />
                 </div>
-                <button type="submit">Login</button>
-                {error && <p className="error">{error}</p>}
+                <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3">Login</button>
+                {error && <p className="error bg-red-500 p-3 rounded-lg block w-full text-center">{error}</p>}
             </form>
         </div>
     );

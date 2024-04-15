@@ -51,6 +51,8 @@ function LoginPage() {
                 </div>
                 <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3">Login</button>
                 {error && <p className="error bg-red-500 p-3 rounded-lg block w-full text-center">{error}</p>}
+                <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3"
+                    onClick={() => navigate("/register");}>Register</button>
             </form>
         </div>
     );

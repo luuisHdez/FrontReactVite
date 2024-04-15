@@ -14,13 +14,13 @@ function App() {
     const isAuthenticated = localStorage.getItem('access_token');
 
     return (
-        <BrowserRouter>
+<BrowserRouter>
             <div className="container mx-auto">
                 <Navigation />
                 <Routes>
                     <Route path="/" element={isAuthenticated ? <Navigate replace to="/tasks"/> : <LoginPage />} />
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} /> {/* New route for registration */
+                    <Route path="/register" element={<RegisterPage />} /> {/* New route for registration */}
                     <Route path="/tasks" element={isAuthenticated ? <TasksPage /> : <Navigate replace to="/login" />} />
                     <Route path="/tasks-create" element={isAuthenticated ? <TaskFormPage /> : <Navigate replace to="/login" />} />
                     <Route path="/tasks/:id" element={isAuthenticated ? <TaskFormPage /> : <Navigate replace to="/login" />} />

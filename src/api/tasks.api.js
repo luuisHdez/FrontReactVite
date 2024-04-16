@@ -26,6 +26,7 @@ export const loginUser = (credentials) => {
     return register.post('token/', credentials)
         .then(response => {
             localStorage.setItem('token', response.data.token); // Store token in localStorage
+            console.log(localStorage.getItem('token'));
             return response.data;
         })
         .catch(error => {

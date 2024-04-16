@@ -27,7 +27,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="login-page">
+        <div className="max-w-xl mx-auto">
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
                 <div>
@@ -38,6 +38,7 @@ const LoginPage = () => {
                         value={credentials.username}
                         onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                         required
+                        className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
                     />
                 </div>
                 <div>
@@ -48,9 +49,10 @@ const LoginPage = () => {
                         value={credentials.password}
                         onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                         required
+                        className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
                     />
                 </div>
-                <button type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
+                <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3" type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
                 {error && <p className="error">{error}</p>}
             </form>
         </div>

@@ -16,8 +16,9 @@ const LoginPage = () => {
         try {
             const userData = await loginUser(credentials);
             console.log('Login successful', userData);
+            localStorage.setItem('token', userData);
             // Redirect to another route upon successful login
-            navigate('/dashboard'); // Change '/dashboard' to your target route after login
+            navigate('/tasks'); // Change '/dashboard' to your target route after login
             setLoading(false);
         } catch (error) {
             console.error("Login failed:", error);

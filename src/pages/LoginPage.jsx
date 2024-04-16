@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for redirection
-import { loginUser } from './path_to/tasks.api'; // Adjust the import path as needed
+import { loginUser } from '../api/tasks.api'; // Adjust the import path as needed
 
 const LoginPage = () => {
     const [credentials, setCredentials] = useState({ username: '', password: '' });

@@ -25,7 +25,7 @@ const register = axios.create({
 export const loginUser = (credentials) => {
     return register.post('token/', credentials)
         .then(response => {
-            localStorage.setItem('token', response.data.token); // Store token in localStorage
+            localStorage.setItem('token', response.data.access); // Store token in localStorage
             console.log(response);
             return response.data;
         })

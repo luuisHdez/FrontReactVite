@@ -1,61 +1,60 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../api/tasks.api';  // Import loginUser from tasks.api.js
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for redirection
+import { loginUser } from './path_to/tasks.api'; // Adjust the import path as needed
 
-// Custom hook for handling login
-
-const useLogin = () => {
-    const navigate = useNavigate();
-    const handleLogin = async (credentials) => {
-        try {
-            const tokens = await loginUser(credentials);
-            localStorage.setItem('access_token', tokens.access);
-            localStorage.setItem('refresh_token', tokens.refresh);
-            navigate('/tasks');
-        } catch (error) {
-            console.error('Login failed:', error);
-            throw error; // Throw error to be caught by the calling component
-        }
-    };
-
-    return { loginUser: handleLogin };
-};
-
-function LoginPage() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+const LoginPage = () => {
+    const [credentials, setCredentials] = useState({ username: '', password: '' });
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const { loginUser } = useLogin();
+    const navigate = useNavigate(); // Hook for navigation
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const handleLogin = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        setError(''); // Clear any existing errors
+
         try {
-            await loginUser({ username, password });
+            const userData = await loginUser(credentials);
+            console.log('Login successful', userData);
+            // Redirect to another route upon successful login
+            navigate('/dashboard'); // Change '/dashboard' to your target route after login
+            setLoading(false);
         } catch (error) {
-            setError('Failed to log in. Please check your credentials and try again.');
+            console.error("Login failed:", error);
+            setError('Login failed. Please check your credentials.');
+            setLoading(false);
         }
     };
 
     return (
-        <div className="max-w-xl mx-auto">
+        <div className="login-page">
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
                 <div>
-                    <label>Username:</label>
-                    <input type="text" value={username} onChange={e => setUsername(e.target.value)} required className="bg-zinc-700 p-3 rounded-lg block w-full mb-3" />
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        id="username"
+                        type="text"
+                        value={credentials.username}
+                        onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                        required
+                    />
                 </div>
                 <div>
-                    <label>Password:</label>
-                    <input type="password" value={password} onChange={e => setPassword(e.target.value)} required className="bg-zinc-700 p-3 rounded-lg block w-full mb-3" />
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={credentials.password}
+                        onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                        required
+                    />
                 </div>
-                <button type="submit" className="bg-indigo-500 p-3 rounded-lg block w-full mt-3">Login</button>
-                {error && <p className="error bg-red-500 p-3 rounded-lg block w-full text-center">{error}</p>}
+                <button type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
+                {error && <p className="error">{error}</p>}
             </form>
-            <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3"
-                   onClick={()=> navigate("/register")}>Register</button>
         </div>
     );
-}
+};
 
 export default LoginPage;

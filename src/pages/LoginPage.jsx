@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for redirection
 import { loginUser } from '../api/tasks.api'; // Adjust the import path as needed
+import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -15,12 +16,12 @@ const LoginPage = () => {
 
         try {
             const userData = await loginUser(credentials);
-            console.log('Login successful', userData);
             // Redirect to another route upon successful login
-            navigate('/tasks'); // Change '/dashboard' to your target route after login
+            navigate('/dashboard'); // Change '/dashboard' to your target route after login
+            toast.success("Redirecting");
             setLoading(false);
         } catch (error) {
-            console.error("Login failed:", error);
+            toast.error('Login failed. Please check your credentials.');
             setError('Login failed. Please check your credentials.');
             setLoading(false);
         }

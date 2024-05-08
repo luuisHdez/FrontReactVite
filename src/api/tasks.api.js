@@ -2,7 +2,11 @@ import axios from 'axios';
 
 // Create an Axios instance for task operations
 const tasksapi = axios.create({
-    baseURL: 'http://localhost:8000/tasks/api/v1/tasks/'
+    baseURL: 'http://localhost:8000/tasks/api/v1/tasks/',
+});
+// Create an Axios instance for registration and login operations
+const register = axios.create({
+    baseURL: 'http://localhost:8000/tasks/api/v1/'
 });
 
 // Interceptor to attach token to each request
@@ -17,10 +21,7 @@ tasksapi.interceptors.request.use(
     error => Promise.reject(error)
 );
 
-// Create an Axios instance for registration and login operations
-const register = axios.create({
-    baseURL: 'http://localhost:8000/tasks/api/v1/'
-});
+
 
 export const loginUser = (credentials) => {
     return register.post('token/', credentials)
@@ -54,6 +55,7 @@ export const getTask = (id) => {
 };
 
 export const createTask = (task) => {
+    console.log("task url", tasksapi, '/'); // Retrieve the token from localStorage)
     return tasksapi.post('/', task)
         .then(response => response.data)
         .catch(error => {
@@ -81,7 +83,7 @@ export const updateTask = (id, task) => {
 };
 
 export const registerUser = (userData) => {
-    return register.post('register/', userData)
+    return register.post('/register/', userData)
         .then(response => response.data)
         .catch(error => {
             console.error("There was an error!", error);

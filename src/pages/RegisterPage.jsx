@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { registerUser } from '../api/tasks.api'; // Import the function from your tasks API file
 import { useNavigate } from 'react-router-dom';
+import { toast } from "react-hot-toast";
 
 function RegisterPage() {
     const [username, setUsername] = useState('');
@@ -9,15 +10,33 @@ function RegisterPage() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const validateEmail = (email) => {
+        const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+    const validatePassword = (password) => {
+        const re = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+        return re.test(password);
+    };
+
     const handleRegister = async (e) => {
         e.preventDefault();
+        if (!validateEmail(email)) {
+            setError('Invalid email format.');
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            setError('Password must contain at least one uppercase letter, one symbol, and be at least 8 characters long.');
+            return;
+        }
+
         try {
-            // Call the registerUser function from tasksApi and pass the user data
             await registerUser({ username, password, email });
-            // On successful registration, redirect to the login page or home page
-            navigate('/login');
+            toast.success('you are registered');
+            navigate('/login'); // Redirect to login on successful registration
         } catch (error) {
-            // Handle errors such as username taken or server issues
             setError('Failed to register. Please check your credentials and try again.');
             console.error('Registration failed:', error);
         }
@@ -61,7 +80,7 @@ function RegisterPage() {
                 {error && <p className="error bg-red-500 p-3 rounded-lg block w-full text-center">{error}</p>}
             </form>
             <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3"
-                    onClick={()=> navigate("/login")}>Sing in</button>
+                    onClick={() => navigate("/login")}>Sign in</button>
         </div>
     );
 }

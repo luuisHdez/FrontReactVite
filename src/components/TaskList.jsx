@@ -5,14 +5,13 @@ export function TaskList() {
 
     const [tasks, setTasks] = useState([]);
     useEffect(() => {
-        async function loadTasks() {
+            async function loadTasks() {
             const res = await getAllTasks(); 
             setTasks(res);
     }
     loadTasks();
 }, []);
 useEffect(() => {
-    console.log(tasks); 
 }, [tasks]);
    
     return <div className=" grid grid-tols-3 gap-3">

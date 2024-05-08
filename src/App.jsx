@@ -1,34 +1,34 @@
-
-
+// src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import TasksPage from './pages/TasksPage';
-import TaskFormPage from './pages/TaskFormPage';
-import LoginPage from './pages/LoginPage'; // Import LoginPage
-
+import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import { Navigation } from './components/Navigation';
+import Navigation from './components/Navigation';
+import AuthenticatedNav from './components/AuthenticatedNav';
+import TasksRouter from './components/tasksRouter';
+import Dashboard from './components/Dashboard';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
-    const isAuthenticated = localStorage.getItem('access_token');
+    const isAuthenticated = localStorage.getItem('token');
 
     return (
-<BrowserRouter>
-            <div className="container mx-auto">
-                <Navigation />
+        <BrowserRouter>
+            {isAuthenticated ? <AuthenticatedNav /> : <Navigation />}
+            
                 <Routes>
-                    <Route path="/" element={isAuthenticated ? <Navigate replace to="/tasks"/> : <LoginPage />} />
+                    <Route path="/" element={<Navigate replace to={isAuthenticated ? "/tasks" : "/login"} />} />
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} /> {/* New route for registration */}
-                    <Route path="/tasks" element={isAuthenticated ? <TasksPage /> : <Navigate replace to="/login" />} />
-                    <Route path="/tasks-create" element={isAuthenticated ? <TaskFormPage /> : <Navigate replace to="/login" />} />
-                    <Route path="/tasks/:id" element={isAuthenticated ? <TaskFormPage /> : <Navigate replace to="/login" />} />
+                    <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate replace to= "/login" /> } />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/tasks/*" element={<TasksRouter isAuthenticated={isAuthenticated} />} />
                 </Routes>
                 <Toaster />
-            </div>
         </BrowserRouter>
+
+        
     );
 }
+ 
 
 export default App;

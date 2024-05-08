@@ -3,7 +3,6 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import TasksPage from '../pages/TasksPage';
 import TaskFormPage from '../pages/TaskFormPage';
-import Dashboard from './components/Dashboard';
 
 function TasksRouter({ isAuthenticated }) {
     return (

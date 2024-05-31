@@ -1,4 +1,4 @@
-import { TaskList } from "../components/TaskList"
+import { TaskList } from "../Tasks/TaskList"
 export function TasksPage() {
     return (
         

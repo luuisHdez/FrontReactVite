@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import HamburgerIcon from '../assets/hamburger-list-menu.svg';
 
 function AuthenticatedNav() {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const handleLogout = () => {
+    const Logout = () => {
         localStorage.removeItem('token');
         navigate('/login');
     };
+    const goDashboard = () => {
+        navigate('/dashboard');
+    }
 
     useEffect(() => {
         // Function to handle clicking outside the sidebar to close it
@@ -38,7 +40,8 @@ function AuthenticatedNav() {
                 >
                     <img src={HamburgerIcon} alt="Menu" className="w-5 h-5" />
                 </button>
-                <h1 className="text-2xl font-bold dark:hover:text-gray-400">Pyreact</h1>
+                <h1 className="text-2xl font-bold dark:hover:text-gray-400 cursor-pointer"
+                onClick={goDashboard}>Pyreact</h1>
                 <button style={{ backgroundColor: 'white'}} className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500">
                     <img src={HamburgerIcon} alt="Menu" className="w-5 h-5" />
                 </button>
@@ -93,7 +96,7 @@ function AuthenticatedNav() {
                         </a>
                     </li>
                     <li className="mb-2">
-                        <button onClick={handleLogout} className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors duration-150">
+                        <button onClick={Logout} className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors duration-150">
                             Logout
                         </button>
                     </li>

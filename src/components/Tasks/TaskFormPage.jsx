@@ -47,25 +47,35 @@ const TaskFormPage = () => {
                     type="text" 
                     placeholder="title"
                     {...register("title", { required: true })}
-                    className="bg-zinc-700 p-3 rounded-lg block w-full mb-3" 
+                    className="bg-zinc-700 p-3 rounded-lg block
+                     w-full mb-3 border-2  border-white-700 " 
                 />
-                {errors.title && <span>This field is required</span>}
+                {errors.title && <span >This field is required</span>}
                 
                 <textarea 
                     rows="3" 
                     placeholder="description"
                     {...register("description", { required: true })}
-                    className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
+                    className="bg-zinc-700 p-2 rounded-lg block w-full mb-3
+                    border-2  border-white-700"
                 ></textarea>
                 {errors.description && <span>This field is required</span>}
                 
-                <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3">Save</button>
+                <button className="  block w-full mt-3
+                                    rounded-md px-4 py-2 text-xs 
+                                    font-medium text-blue-700 border-2 
+                                    border-blue-700 shadow-lg hover:bg-blue-700 
+                                    hover:text-white transition duration-300">Save</button>
             </form>
             
             {id && (
                 <div className="flex justify-end">
                     <button 
-                        className="bg-red-500 p-3 rounded-lg w-48 mt-3"
+                        className=" p-3 rounded-lg w-48 mt-3
+                                    rounded-md px-4 py-2 text-xs 
+                                    font-medium text-red-700 border-2 
+                                    border-red-700 shadow-lg hover:bg-red-700 
+                                    hover:text-white transition duration-300"
                         onClick={async () => {
                             if (window.confirm("Are you sure?")) {
                                 await deleteTask(id);

@@ -12,7 +12,8 @@ const TaskFormPage = lazy(() => import('./components/Tasks/TaskFormPage'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 
 function App() {
-    const isAuthenticated = Boolean(localStorage.getItem('token'));
+    
+    const isAuthenticated = document.cookie.includes('csrftoken');
 
     return (
         <BrowserRouter>
@@ -47,7 +48,7 @@ function TasksLayout() {
         <Suspense fallback={<div>Loading...</div>}>
             <Routes>
                 <Route path="/" element={<TasksPage />} />
-                <Route path="tasks-create" element={<TaskFormPage />} />
+                <Route path="create" element={<TaskFormPage />} />
                 <Route path=":id" element={<TaskFormPage />} />
             </Routes>
         </Suspense>

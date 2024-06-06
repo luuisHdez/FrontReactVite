@@ -14,10 +14,11 @@ export function TaskList() {
 useEffect(() => {
 }, [tasks]);
    
-    return <div className=" grid grid-tols-3 gap-3">
-            {tasks.map((task, index) => (
-                <TaskCard key={task.id} task={task} />
-               
-))}
-    </div>;
-};
+return (
+    <div className="grid gap-4 p-2 rounded-md">
+        {tasks.map((task, index) => (
+            <TaskCard key={task.id} task={task} />
+        ))}
+    </div>
+);
+}

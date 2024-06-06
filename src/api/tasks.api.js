@@ -1,41 +1,72 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-// Create an Axios instance for task operations
+// Crea una instancia de Axios para las operaciones de tareas
 const tasksapi = axios.create({
     baseURL: 'http://localhost:8000/tasks/api/v1/tasks/',
-});
-// Create an Axios instance for registration and login operations
-const register = axios.create({
-    baseURL: 'http://localhost:8000/tasks/api/v1/'
+    withCredentials: true, // Asegura que las cookies se envíen con cada solicitud
 });
 
-// Interceptor to attach token to each request
-tasksapi.interceptors.request.use(
+// Crea una instancia de Axios para las operaciones de autenticación
+const Authentication = axios.create({
+    baseURL: 'http://localhost:8000/authentication/',
+    withCredentials: true, // Asegura que las cookies se envíen con cada solicitud
+});
+
+// Añadir CSRF token a las solicitudes si está presente en las cookies
+Authentication.interceptors.request.use(
     config => {
-        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-        if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`; // Set Authorization header
+        const csrfToken = Cookies.get('csrftoken');
+        console.log('CSRF Token (before API call):', csrfToken); // Imprime el token CSRF antes de la llamada API
+        if (csrfToken) {
+            config.headers['X-CSRFToken'] = csrfToken;
         }
         return config;
     },
     error => Promise.reject(error)
 );
 
+// Interceptor para manejar errores de autenticación
+tasksapi.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {
+            console.error('Not authenticated. Redirecting to login...');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
 
-
-export const loginUser = (credentials) => {
-    return register.post('token/', credentials)
-        .then(response => {
-            localStorage.setItem('token', response.data.access); // Store token in localStorage
-            console.log(response);
-            return response.data;
-        })
+// Función para registrar un usuario
+export const registerUser = (userData) => {
+    return Authentication.post('register/', userData)
+        .then(response => response.data)
         .catch(error => {
-            console.error("Login failed:", error);
+            console.error("There was an error!", error);
             throw error;
         });
 };
 
+// Función para iniciar sesión del usuario
+export const loginUser = (credentials) => {
+    const csrfToken = Cookies.get('csrftoken'); // Obtener el token CSRF de las cookies
+    console.log(csrfToken,"tokeeeeeeen")
+    return Authentication.post('login/', credentials, {
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+    })
+    .then(response => response.data)
+    .catch(error => {
+        console.error("Login failed:", error);
+        throw error;
+    });
+};
+
+// Otras funciones para manejar las tareas (sin cambios)
 export const getAllTasks = () => {
     return tasksapi.get('/')
         .then(response => response.data)
@@ -46,7 +77,7 @@ export const getAllTasks = () => {
 };
 
 export const getTask = (id) => {
-    return tasksapi.get(`${id}/`) // Ensure proper URL format
+    return tasksapi.get(`${id}/`) // Asegura el formato correcto de la URL
         .then(response => response.data)
         .catch(error => {
             console.error("There was an error!", error);
@@ -55,7 +86,6 @@ export const getTask = (id) => {
 };
 
 export const createTask = (task) => {
-    console.log("task url", tasksapi, '/'); // Retrieve the token from localStorage)
     return tasksapi.post('/', task)
         .then(response => response.data)
         .catch(error => {
@@ -65,7 +95,7 @@ export const createTask = (task) => {
 };
 
 export const deleteTask = (id) => {
-    return tasksapi.delete(`${id}/`) // Ensure proper URL format
+    return tasksapi.delete(`${id}/`) // Asegura el formato correcto de la URL
         .then(response => response.data)
         .catch(error => {
             console.error("There was an error!", error);
@@ -74,16 +104,7 @@ export const deleteTask = (id) => {
 };
 
 export const updateTask = (id, task) => {
-    return tasksapi.put(`${id}/`, task) // Ensure proper URL format
-        .then(response => response.data)
-        .catch(error => {
-            console.error("There was an error!", error);
-            throw error;
-        });
-};
-
-export const registerUser = (userData) => {
-    return register.post('/register/', userData)
+    return tasksapi.put(`${id}/`, task) // Asegura el formato correcto de la URL
         .then(response => response.data)
         .catch(error => {
             console.error("There was an error!", error);

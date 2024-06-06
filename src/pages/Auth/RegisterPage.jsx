@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { registerUser } from '../api/tasks.api'; // Import the function from your tasks API file
+import { registerUser } from '../../api/tasks.api'; // Import the function from your tasks API file
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-hot-toast";
 

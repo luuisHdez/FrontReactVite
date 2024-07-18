@@ -1,8 +1,10 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Navigation from './components/Navigation';
 import AuthenticatedNav from './components/AuthenticatedNav';
 import { Toaster } from 'react-hot-toast';
+import Headerh from './components/header';
 
 // Lazy load the components
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
@@ -12,8 +14,19 @@ const TaskFormPage = lazy(() => import('./components/Tasks/TaskFormPage'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 
 function App() {
-    
-    const isAuthenticated = document.cookie.includes('csrftoken');
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // Definir el estado de autenticación
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() =>{
+        //Validar si el usuario es autenticado
+        const token = document.cookie.includes('csrftoken');
+        setIsAuthenticated(token);
+        setIsLoading(false);
+    }, []);
+
+    if (isLoading) {
+        return <div>Loading...</div>; // Mostrar una pantalla de carga mientras se verifica la autenticación
+    }
 
     return (
         <BrowserRouter>
@@ -25,7 +38,7 @@ function App() {
 function MainRoutes({ isAuthenticated }) {
     return (
         <>
-            {isAuthenticated ? <AuthenticatedNav /> : <Navigation />}
+            {isAuthenticated ? <Headerh/> : <Navigation />}
            
             <Suspense fallback={<div>Loading...</div>}>
                 <main className="mt-8 p-4">

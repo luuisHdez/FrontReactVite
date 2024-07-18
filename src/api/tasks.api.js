@@ -27,15 +27,21 @@ Authentication.interceptors.request.use(
 );
 
 // Interceptor para manejar errores de autenticación
-tasksapi.interceptors.response.use(
-    response => response,
-    error => {
-        if (error.response && error.response.status === 401) {
-            console.error('Not authenticated. Redirecting to login...');
-            window.location.href = '/login';
+// Añadir token de acceso y CSRF token a las solicitudes de tasksapi
+tasksapi.interceptors.request.use(
+    config => {
+        const csrfToken = Cookies.get('csrftoken');
+        const accessToken = localStorage.getItem('access'); // Obtener el token de acceso del almacenamiento local
+        console.log('Access Token (before API call):', accessToken);
+        if (csrfToken) {
+            config.headers['X-CSRFToken'] = csrfToken;
         }
-        return Promise.reject(error);
-    }
+        if (accessToken) {
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    error => Promise.reject(error)
 );
 
 // Función para registrar un usuario
@@ -59,12 +65,40 @@ export const loginUser = (credentials) => {
         },
         withCredentials: true
     })
-    .then(response => response.data)
+    .then(response => {
+        localStorage.setItem('access', response.data.access); // Guardar el token de acceso
+        localStorage.setItem('refresh', response.data.refresh); // Guardar el token de refresco
+        return response.data;
+    })
     .catch(error => {
         console.error("Login failed:", error);
         throw error;
     });
 };
+
+export const logout = () => {
+    const csrfToken = Cookies.get('csrftoken'); // Obtener el token CSRF de las cookies
+    console.log(csrfToken,"tokeeeeeeen")
+    return Authentication.post('logout/', {}, {
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/json'
+        },
+        withCredentials: true
+    })
+    .then(response => {
+        // Remove the session data
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        Cookies.remove('csrftoken');
+       
+        return response.data;
+    })
+    .catch(error => {
+        console.log("Logout failed", error);
+        throw error;
+    });
+}
 
 // Otras funciones para manejar las tareas (sin cambios)
 export const getAllTasks = () => {

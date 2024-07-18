@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HamburgerIcon from '../assets/hamburger-list-menu.svg';
+import { logout } from '../api/tasks.api';
 
 function AuthenticatedNav() {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
 
-    const Logout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
+
+    const Logout = async () => {
+        try {
+            const response = await logout();
+            if(response.code === 200){
+                
+                window.location.href = '/login';
+            } 
+                
+            else{console.log('Error')}
+            
+        } catch (error) {
+            console.error('Logout failed:', error);
+            // Handle logout failure, e.g., show an error message to the user
+            alert('Logout failed. Please try again.');
+            
+        }
     };
     const goDashboard = () => {
         navigate('/dashboard');

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../api/tasks.api';
 import { toast } from "react-hot-toast";
-import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const LoginPage = () => {
@@ -32,20 +31,19 @@ const LoginPage = () => {
         try {
             console.log('Cookies before login attempt:', document.cookie);
             const csrfToken = Cookies.get('csrftoken');
-            console.log('CSRF Token (used in login):', csrfToken);
-
+           // console.log('CSRF Token (used in login):', csrfToken);
             
            
             const userData = await loginUser(credentials); // Pasar el token CSRF a la función loginUser
-            console.log('Login successful', userData); 
+          //  console.log('Login successful', userData); 
             
             // Guardar los tokens en el almacenamiento local o en cookies
             localStorage.setItem('refresh', userData.refresh);
             localStorage.setItem('access', userData.access);
 
-            
-            navigate('/tasks');
             toast.success("Redirecting");
+            window.location.href = '/dashboard';
+            
             
         } catch (error) {
             console.error(error);

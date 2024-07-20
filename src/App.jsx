@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Navigation from './components/Navigation';
 import AuthenticatedNav from './components/AuthenticatedNav';
 import { Toaster } from 'react-hot-toast';
-import Headerh from './components/header';
+import Chartbrush from './components/Dashboard/Chartbrush'
 
 // Lazy load the components
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage'));
@@ -38,12 +38,13 @@ function App() {
 function MainRoutes({ isAuthenticated }) {
     return (
         <>
-            {isAuthenticated ? <Headerh/> : <Navigation />}
+            {isAuthenticated ? <AuthenticatedNav/> : <Navigation />}
            
             <Suspense fallback={<div>Loading...</div>}>
                 <main className="mt-8 p-4">
                     <Routes>
                         <Route path="/" element={<Navigate replace to={isAuthenticated ? "/dashboard" : "/login"} />} />
+                        <Route path="/charts" element={isAuthenticated ? <Chartbrush /> : <Navigate replace to="/login" />} />
                         <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate replace to="/login" />} />
                         <Route path="/login" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
